@@ -48,7 +48,7 @@ app.post('/api/signup', asyncRoute(async (req, res) => {
   if (!username || !password || username.length < 2 || password.length < 4) {
     return res.status(400).json({ error: 'Username (2+ chars) and password (4+ chars) required' });
   }
-  const existing = await pool.query('SELECT id FROM users WHERE username = $1', [username]);
+  const existing = await pool.query('SELECT id FROM users WHERE LOWER(username) = LOWER($1)', [username]);
   if (existing.rows.length) return res.status(409).json({ error: 'Username already taken' });
 
   const hash = bcrypt.hashSync(password, 10);
@@ -64,7 +64,7 @@ app.post('/api/signup', asyncRoute(async (req, res) => {
 
 app.post('/api/login', asyncRoute(async (req, res) => {
   const { username, password } = req.body || {};
-  const result = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
+  const result = await pool.query('SELECT * FROM users WHERE LOWER(username) = LOWER($1)', [username || '']);
   const user = result.rows[0];
   if (!user || !bcrypt.compareSync(password || '', user.password_hash)) {
     return res.status(401).json({ error: 'Invalid username or password' });

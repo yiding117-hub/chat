@@ -111,9 +111,16 @@ async function init() {
   }
 }
 
+function setAuthBusy(busy) {
+  loginBtn.disabled = busy;
+  signupBtn.disabled = busy;
+  loginBtn.textContent = busy ? 'Loading…' : 'Log in';
+}
+
 authForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   authError.textContent = '';
+  setAuthBusy(true);
   try {
     const data = await api('/api/login', {
       method: 'POST',
@@ -125,11 +132,14 @@ authForm.addEventListener('submit', async (e) => {
     connectSocket();
   } catch (err) {
     authError.textContent = err.message;
+  } finally {
+    setAuthBusy(false);
   }
 });
 
 signupBtn.addEventListener('click', async () => {
   authError.textContent = '';
+  setAuthBusy(true);
   try {
     const data = await api('/api/signup', {
       method: 'POST',
@@ -141,6 +151,8 @@ signupBtn.addEventListener('click', async () => {
     connectSocket();
   } catch (err) {
     authError.textContent = err.message;
+  } finally {
+    setAuthBusy(false);
   }
 });
 
