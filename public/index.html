@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Chat</title>
+<link rel="manifest" href="/manifest.json" />
+<meta name="theme-color" content="#0b0f14" />
+<link rel="icon" href="/icons/icon-192.png" />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+<div id="auth-screen" class="screen">
+  <form id="auth-form" class="auth-card">
+    <h1>Chat</h1>
+    <p class="subtitle">Sign up or log in to start chatting.</p>
+    <input id="username" type="text" placeholder="Username" autocomplete="username" required />
+    <input id="password" type="password" placeholder="Password" autocomplete="current-password" required />
+    <div class="auth-buttons">
+      <button type="submit" id="login-btn" class="primary">Log in</button>
+      <button type="button" id="signup-btn">Sign up</button>
+    </div>
+    <p id="auth-error" class="error"></p>
+  </form>
+</div>
+
+<div id="chat-screen" class="screen" hidden>
+  <header class="chat-header">
+    <span id="whoami"></span>
+    <div class="header-actions">
+      <button id="enable-push-btn" class="pill">Enable notifications</button>
+      <button id="logout-btn" class="pill">Log out</button>
+    </div>
+  </header>
+
+  <main id="messages"></main>
+
+  <form id="message-form" class="composer">
+    <input id="message-input" type="text" placeholder="Message" autocomplete="off" maxlength="2000" required />
+    <button type="submit" class="primary">Send</button>
+  </form>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>
